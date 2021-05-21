@@ -1,0 +1,31 @@
+{
+	"name": "PIMVis",
+	"version": "0.0.1",
+
+	"resources": [
+
+	],
+
+	"selectors": [
+
+	],
+
+	"links": [
+		{
+			"name": "NavigationPath",
+			"sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"targetRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"properties": [
+				{"name": "followCount", "type": "int64"}
+			]
+		},
+		{
+			"name": "ChildContent",
+			"sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"targetRestrictions": {"type": "blacklist", "list": ["SlideResource"]},
+			"properties": [
+				{"name": "test", "type": "int64"}
+			]
+		}
+	]
+}

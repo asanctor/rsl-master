@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  	<script src="libs/jquery-3.2.1.min.js"></script>
+  
+  	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<script>
+
+		function makeAnchorText(txt)
+		{
+			let result = txt.toLowerCase().trim();
+			result = result.replace(/ /g,"-");
+			return result;
+		}
+
+		function makeToc()
+		{
+			let tocRoot = $('#toc');
+			let sectionList = $('<ul></ul>');
+			$('h2').each(function(index, sec) {
+
+				let sectionAnchor = makeAnchorText($(sec).text());
+				$(sec).html('<a name="' + sectionAnchor + '">' + $(sec).text() + '</a>');
+
+				let sectionItem = $('<li><a href="#' + sectionAnchor + '">' + $(sec).text() + '</a></li>');
+
+				let subSections = $(sec).nextUntil('h2', 'h3');
+				if($(subSections).length > 0)
+				{
+					let subsectionList = $('<ul></ul>');
+					$(subSections).each(function(index, subsec) {
+						let subsectionAnchor = makeAnchorText($(subsec).text());
+						$(subsec).html('<a name="' + subsectionAnchor + '">' + $(subsec).text() + '</a>');
+						let subsectionItem = $('<li><a href="#' + subsectionAnchor + '">' + $(subsec).text() + '</a></li>');
+						$(subsectionList).append(subsectionItem);
+					});
+					$(sectionItem).append(subsectionList);
+				}
+				
+				$(sectionList).append(sectionItem);
+			});
+			$(tocRoot).append('<h2>Table of Contents</h2>');
+			$(tocRoot).append(sectionList);
+		}
+
+		$( document ).ready(function() {
+
+			makeToc();
+			
+		});
+
+	</script>
+
+	<style>
+
+		body {
+			padding: 15px;
+		}
+
+		h3 {
+			display: list-item;                                                   
+    		list-style-type: disc;       
+    		list-style-position: inside;
+		}
+
+		h2 a {color: black;text-decoration: none;}
+		h2 a:link {color: black;text-decoration: none;}
+		h2 a:visited {color: black;text-decoration: none;}
+		h2 a:hover {color: black;text-decoration: none;}
+		h2 a:active {color: black;text-decoration: none;}
+		h3 a {color: black;text-decoration: none;}
+		h3 a:link {color: black;text-decoration: none;}
+		h3 a:visited {color: black;text-decoration: none;}
+		h3 a:hover {color: black;text-decoration: none;}
+		h3 a:active {color: black;text-decoration: none;}
+
+	</style>
+
+</head>
+<body>
+  
+<h1>RSL Manual</h1>
+
+<hr>
+<div id="toc"></div>
+<hr>
+
+<h2>Installation</h2>
+
+<p>Special care was taken to make this implementation as cross-platform as possible, and everything should work on Windows, macOS and Linux. The tools required to work with RSL are available for all platforms too:</p>
+
+<ul>
+	<li>The latest Java <a target="_blank" href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">JRE for Java</a></li>
+	<li>The latest Java <a target="_blank" href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">JDK for Java</a></li>
+	<li><a target="_blank" href="https://gradle.org/">Gradle</a> (build tool)</li>
+	<li>A good Java IDE. RSL does not need a particular editor to work, but <a target="_blank" href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a> is highly recommended. The free community edition is good enough but VUB students and staff can request a free academic licence for IntelliJ IDEA Ultimate on their website. </li>
+</ul>
+
+<p>All dependencies and build configurations are handled by Gradle, so to compile the project it is sufficient to run the following command in the root project directory:</p>
+
+<pre>
+<code class="shell">$ gradle build</code>
+</pre>
+
+<p>This may take a while the first time as all external project dependencies will need to be downloaded by Gradle (e.g. external libraries). Future Gradle commands will go a lot faster. If everything built ok, the next step is to run the unit tests to see if everything works on your platform:</p>
+
+<pre>
+<code class="shell">$ gradle test</code>
+</pre>
+
+<p>All tests should pass. We intend to make sure that any code in the Git repository always passes all tests, so if a test fails something else is wrong and further investigation is required.</p>
+
+<p> 
+	In case of issues (e.g. failing unit tests) it is worth trying to perform a "clean" of the project. This will remove all dependencies, caches and already compiled code. The next time you run a build or test, everything will downloaded, built and processed from scratch which can resolve some issues. For instance, when a project is built and tested on one machine and if the directory is then moved to another machine, tests might fail because it was built on another OS or other JDK version.
+</p>
+
+<pre>
+<code class="shell">$ gradle clean</code>
+</pre>
+
+<h2>Creating RSL Models</h2>
+
+To use RSL one must first create an RSL model that is relevant for your applications. This means that one should describe the different kinds of resources, selectors and links. This is done in a seperate file, in the JSON format. Models should be placed in the "rsl/build/schemas/models/" directory, and look like this:
+
+<pre>
+<code class="json">{
+   "name": "MindXpres",
+   "version": "0.0.1",
+
+   "resources": [
+      {
+         "name": "PresentationResource",
+         "properties": [
+            {"name": "title", "type": "string"},
+            {"name": "theme", "type": "string"}
+         ]
+      },
+      {
+         "name": "SlideResource",
+         "properties": [
+            {"name": "theme", "type": "string"}
+         ]
+      }
+   ],
+
+   "selectors": [
+
+   ],
+
+   "links": [
+      {
+         "name": "NavigationPathLink",
+         "sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+         "targetRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+         "properties": [
+            {"name": "followCount", "type": "int64"}
+         ]
+      },
+      {
+         "name": "HasChildContentLink",
+         "sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+         "targetRestrictions": {"type": "blacklist", "list": ["SlideResource"]},
+         "properties": [
+            {"name": "test", "type": "int64"}
+         ]
+      }
+   ]
+}
+</code>
+</pre>
+
+<p>
+At the time of writing these JSON models are not validated properly and you need to be sure that they are correct. When in doubt, use a JSON validator such as <a target="_blank" href="https://jsonlint.com/">https://jsonlint.com/</a> to make sure the provided JSON is well-formed. The supported data types for entity properties can be found in DataPrimitives.java in the rsl-compiler module. After defining your model, please refer to the next section for the next steps.
+</p>
+
+<h2>Using RSL</h2>
+
+<p>
+	Before providing further details it is worth mentioning that a lot of examples on how to use RSL can be found in the unit tests throughout the project. This includes examples on how to use the server's HTTP interface.
+</p>
+
+<p>
+	RSL can be used in two ways. Embedded Mode means that you use RSL directly as a JAR library in another Java project. Client-Server Mode means that RSL will be run as a server, allowing clients to interact with the system even if they are running on another device or if they are using another programming language.
+</p>
+
+<h3>Embedded Mode</h3>
+
+<p>
+	In order to use RSL as a JAR library as part of another Java project, first create your model(s) as described above and place them in "rsl/build/schemas/models/". Next, we will use the provided RSL compiler to turn the models into JAR files. To do this, run the following Gradle command in the root RSL project directory:
+</p>
+
+<pre>
+<code class="shell">$ gradle compileSchemas</code>
+</pre>
+
+<p>
+	This will create JAR files for your models and place them in "build/schemas/compiled". To now use them in your project, create a subdirectory in your own Java project, which we will refer to as "&lt;rsldir&gt;" in the rest of this subsection. Next, copy everything from RSL project's "build/" directory into the "&lt;rsldir&gt;" in your own project. Add "&lt;rsldir&gt;/rsl-core.jar" as well as the JAR files in "&lt;rsldir&gt;/schemas/compiled" to your project's runtime classpath. All other JAR dependencies are automatically loaded at runtime too, as "rsl-core.jar" references them from it's JAR manifest file. This means that you should not change the names or locations of anything inside of the "&lt;rsldir&gt;" directory.
+</p>
+
+<p>
+	In case of issues, it is worth trying to "clean" the project first:
+</p>
+<pre>
+<code class="shell">$ gradle clean</code>
+</pre>
+
+
+<p>
+	If you need to recompile and test models frequently, it is worth noting that you can ask "&lt;rsldir&gt;/rsl-core.jar" to recompile the models by starting the rsl.core.RSL class with the "--compileSchemas" flag. For instance, on a UNIX-based system one could do the following in the "&lt;rsldir&gt;" directory. Use ";" as classpath seperators if you're using Windows, and it should also work.
+</p>
+
+<pre>
+<code class="shell">$ java -cp "*:libs/*:persistence/*" rsl.core.RSL --compileSchemas</code>
+</pre>
+
+<p>
+	You can (and should!) automate this with Gradle, IDE tasks or other scripting methods. Another option is to create a Gradle task or other script that runs "gradle compileSchemas" in the main RSL project root directory, and then copies the content of the "build/" directory to your project's "&lt;rsldir&gt;" so that you have the latest RSL libraries as well as the latest compiled models in your project. 
+</p>
+
+<p>
+	Once you have imported the generated JAR files into your own project as described earlier, you will find that there are Java classes available for the entities that you described in your model. For instance, if the model describes an entity called "TextResource" you can do the following in your code:
+</p>
+
+<pre>
+<code class="java">TextResource text1 = new TextResource()</code>
+</pre>
+
+<p>
+	Depending on the supertype of your entity (resource, selector or link) you will have different methods available to work with your RSL entities. See the code, the demo or the unit tests for examples on how to use the RSL library. Additional helper methods for querying and retrieving already stored information can be found in the RslQuery class. It is worth noting that entities will not be stored in the database until you explicitly call the "save()" method on them. However, when "save()" is called on one entity, any unsaved entities attached to your entity (e.g. via links) are also automatically saved. Similarly, if any unsaved entities are attached to a saved entity, they will be saved automatically, as well as any other entities that can reached via them. 
+</p>
+
+<h3>Client-Server Mode</h3>
+
+<p>
+	To use RSL in client-server mode, you also need to place your models in "rsl/build/schemas/models/" first. These will be compiled and loaded automatically when the server is started. To start the server, simply run the following Gradle task in the RSL root directory:
+</p>
+
+<pre>
+<code class="shell">$ gradle run</code>
+</pre>
+
+<p>
+	The server can be accessed via multiple protocols (HTTP / Websocket / TCP/IP / ...) and this can always be extended with new interface protocols (see later sections in this document). At the time of writing the most functional and complete interface is the HTTP Rest API. Please refer to the seperate "rest_api.html" document for details, as well as the unit tests in the "rsl-server" module.
+</p>
+
+<p>
+	In order to test changes to the model you should just restart the server. In the future model changes could be applied automatically at run-time, but this is currently not implemented.
+</p>
+
+<p>
+	The commands supported by the server are implemented in the so-called microservices (see later sections) in the "rsl-server" module. Every service exports a set of commands that can then be accessed via any of interface implemented for the server. The default service provides a set of generic commands to work with RSL entities and that can be accessed via any interface (see "rest_api.html" for details on the HTTP Rest interface). If more complex functionality is required the user should implement their own microservice for their application which can combine a complex sequence of actions into a single command for the client application. For instance, if the client application was a presentation tool, the developer could create a microservice that implements an "get all content (entities!) associated with the presentation with that ID ", which would greatly reduce the complexity on the client side. Additional microservices should be registered in the "MicroserviceManager.java" class before they are used by the server. 
+</p>
+
+
+<h2>Development</h2>
+
+<h3>MicroServices</h3>
+
+<p> 
+	The commands supported by the server are implemented in the so-called microservices. A microservice implements a set of commands ("methods"), without caring about the protocols used by the clients to communicate with the server. Server interfaces (see later sections) will automatically map incoming requests onto your microservices and will send back their response, so in other words, the commands in a microservice are automatically accessible from any of the server interfaces. 
+</p>
+
+<p>
+	The default service provides a set of generic commands to work with RSL entities and like every microservice it can be accessed via any interface (see "rest_api.html" for details on the HTTP Rest interface). If more complex functionality is required the user should implement their own microservice for their application which can combine a complex sequence of actions into a single command for the client application. For instance, if the client application was a presentation tool, the developer could create a microservice that implements an "get all content (entities!) associated with the presentation with that ID ", which would greatly reduce the complexity on the client side. Additional microservices should be registered in the "MicroserviceManager.java" class before they are used by the server. 
+</p>
+
+<p> 
+	Microservices are created by implementing the "Microservice" class interface and by registering it in the "MicroServiceManager". In short, a microservice exports a set of commands that it can handle, and when a request comes in that invokes one of these commands (could be via any server interface) the server will automatically pass the request to that microservice. Any requests that come in are translated into a generic representation by the corresponding server interface (see later section). For this reason a microservice always receives a request in the same format (a Java object), regardless of how the request was sent to the server. The server internals will automatically invoke the relevant method that the microservice provides to handle that command/request. The microservice can then make use of the core RSL library (or other libraries) to fulfil the request, and it should then pass back the result (which could be an error message) in the generic ServerResponse format, so that the server internals can send it back to the client via the relevant server interface (which will translate the response if needed). 
+</p>
+
+<p> Please refer to the "rsl.server.microservices" package to see how some existing microservices are implemented (HTTP Rest is the most complete service). </p>
+
+<h3>Server Interfaces</h3>
+
+<p> This subsection is only relevent for developers that want to add support for new protocols to the server module. To add new commands, see the "MicroServices" section! </p>
+
+<p> 
+	The server can be accessed by many different protocols, and support for more protocols can always be added. See the rsl.server.interfaces package for existing interfaces. The system is designed to be modular and generic (and it is!), but at the time of writing the code for the implemented interfaces is placed inside of the rsl-server module (rsl.server.interfaces). In the future the code for the server interfaces should be isolated into sub-modules and compiled into seperate JAR libraries. 
+</p>
+
+<p> To add a new interface one must simply implement the "ClientCommunicationInterface" class interface and register it in the "InterfaceManager" class. In short, the interface is responsible for translating requests into an internal representation for requests ("ClientRequest") and for translating the server's response ("ServerResponse") back into a format that works for the implemented protocol. Once the server interface has translated a request, the request is passed on the server internals where it will be processed automatically. The request is automatically mapped onto the commands implemented by the microservices and issues with the request are dealt with accordingly. The server then passes back the result of the request (which might also be an error message if things went wrong) and the interface should then return the result to the client in the appropriate format. See the HTTP Rest interface or WebSocket interface for example implementations. </p>
+
+
+<h3>Unit Tests</h3>
+
+<p>The project has many unit tests, and future developers are encouraged to add scenarios to the unit tests for new features. To run the unit tests, use gradle like this:</p>
+
+<pre>
+<code class="shell">$ gradle test</code>
+</pre>
+
+<p>To run only a particular group of tests (e.g. while debugging/testing a particular feature), provide the test suite classname as an argument like this:</p>
+<pre>
+<code class="shell">$ gradle test -PtestClass=MyTestClass</code>
+</pre>
+
+</body>
+</html>

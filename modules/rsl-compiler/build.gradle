@@ -1,0 +1,45 @@
+group 'rsl'
+version '0.0.1'
+
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.squareup:javapoet:1.9.0'
+    compile 'commons-io:commons-io:2.5'
+    // this tools.jar is part of the JDK and is needed for invoking the Java compiler at runtime
+    compile files("${System.properties['java.home']}/../lib/tools.jar")
+}
+
+task makeDist(type: Copy) {
+    dependsOn build
+
+    into distsDir
+
+    into('.') {
+        from jar
+        rename {
+            project.name + '.jar'
+        }
+    }
+
+    into(rslLibDir.getName()) {
+        from rootProject.removeSubprojectDependencies(configurations.runtimeClasspath.getFiles())
+    }
+
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                   "Implementation-Version": version,
+                   "Class-Path": rootProject.fixJarDependencies(configurations.runtimeClasspath.getFiles()).join(' '),
+                   'Main-Class': 'rsl.compiler.Main')
+    }
+}

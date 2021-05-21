@@ -1,0 +1,43 @@
+{
+	"name": "MindXpres",
+	"version": "0.0.1",
+
+	"resources": [
+		{
+			"name": "PresentationResource",
+			"properties": [
+				{"name": "title", "type": "string"},
+				{"name": "theme", "type": "string"}
+			]
+		},
+		{
+			"name": "SlideResource",
+			"properties": [
+				{"name": "theme", "type": "string"}
+			]
+		}
+	],
+
+	"selectors": [
+
+	],
+
+	"links": [
+		{
+			"name": "NavigationPathLink",
+			"sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"targetRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"properties": [
+				{"name": "followCount", "type": "int64"}
+			]
+		},
+		{
+			"name": "HasChildContentLink",
+			"sourceRestrictions": {"type": "whitelist", "list": ["SlideResource"]},
+			"targetRestrictions": {"type": "blacklist", "list": ["SlideResource"]},
+			"properties": [
+				{"name": "test", "type": "int64"}
+			]
+		}
+	]
+}

@@ -1,0 +1,197 @@
+group 'wise'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'base'
+
+
+ext.rslTestDir = file(buildDir.getPath() + '/tests/')
+ext.rslLibDir = file(buildDir.getPath() + '/libs/')
+ext.rslPersistenceLibDir = file(buildDir.getPath() + '/persistence/')
+
+ext.rslModules = subprojects.findAll { it.projectDir.toString().replace(rootProject.projectDir.toString(), '').contains('modules' + File.separator + 'rsl-') }
+ext.testRunner = project(':testrunner')
+
+
+// postpone assembly of main project until all sub-projects are done
+evaluationDependsOnChildren()
+
+// make sure rslModules copy their artifacts to a dist dir after building
+configure(rslModules) {
+
+    // make sure rslModules copy their artifacts a dist dir after building
+    build.finalizedBy(tasks.makeDist)
+
+    // prevent testing of subprojects when building
+    // http://stackoverflow.com/questions/4597850/gradle-build-without-tests.
+    tasks.withType(Test) { enabled = false }
+
+    dependencies {
+        testCompile 'junit:junit:4.11'
+    }
+
+}
+
+
+// prevent subprojects copying rsl module JARs to the shared libs folder
+// these will be in the root folder next to each other!
+// use during the buildDist phases of the subprojects to copy their dependencies without rsl module dependencies
+def removeSubprojectDependencies(Set<File> dependencies)
+{
+    Collection<String> rslModuleNames = rslModules.collect { it.getName() }
+    def filteredDependencies = dependencies.findAll { File dependency ->
+        String fileName = dependency.getName()
+        if(rslModuleNames.find { String rslModuleName -> fileName.startsWith(rslModuleName) })
+        {
+            false // do not keep
+        } else {
+            true // add to result
+        }
+    }
+    return files(filteredDependencies)
+}
+
+// prevent subprojects copying rsl module JARs to the shared libs folder
+// these will be in the root folder next to each other!
+// used for setting the classpath of the module jars, correcting them for rsl module dependencies
+def fixJarDependencies(Set<File> dependencies)
+{
+    Collection<String> rslModuleNames = rslModules.collect { it.getName() }
+    def fixedDependencies = dependencies.collect { File dependency ->
+        String fileName = dependency.getName()
+        def rslName = rslModuleNames.find { String rslModuleName -> fileName.startsWith(rslModuleName) }
+        if(rslName)
+        {
+            rslName + ".jar" // is rsl dependency
+        } else {
+            rslLibDir.getName() + "/" + dependency.getName() // is other library
+        }
+    }
+    return fixedDependencies
+}
+
+def getPersistenceJarRuntimePath() {
+    def tree = fileTree(dir: 'build/persistence', includes: ['objectdb-*.jar'])
+    def files = tree.getFiles().toArray()
+    if(files.size() > 0)
+    {
+        return files[0]
+    }else{
+        return ""
+    }
+}
+
+
+def getRunClasspath() {
+    return files(fileTree(dir: 'build', includes: ['*.jar', 'libs/*.jar', 'persistence/*.jar']))
+}
+
+def getUnitTestClassPath() {
+    return files(fileTree(dir: 'build', includes: ['*.jar', 'libs/*.jar', 'persistence/*.jar', 'tests/*.jar']))
+}
+
+static def makeJarClasspathString(String rootPath, FileCollection files) {
+    return files.collect { new File(rootPath).toPath().relativize( it.toPath() ) }.join(' ')
+}
+
+task run(type: JavaExec) {
+    workingDir = rootProject.buildDir
+    classpath = getRunClasspath()
+    main = 'rsl.server.RSLServer'
+}
+
+// gather all test classes from rslModules and make one test jar
+task testJar(type: Jar, dependsOn: build ) {
+    manifest {
+        attributes("Implementation-Title": "TestRunner",
+                "Implementation-Version": "0.0.1",
+                "Class-Path": makeJarClasspathString(rslTestDir.getPath(), getUnitTestClassPath())
+        )
+    }
+    destinationDir = rslTestDir
+    archiveName = 'tests.jar'
+    subprojects.each { subproject ->
+        from files(rslModules.tasks.test.testClassesDirs)
+    }
+}
+testJar.doLast { delete buildDir.getPath() + '/tmp'}
+
+
+task installTestRunner(type: Copy, dependsOn: testRunner.makeDist) {
+    from file(testRunner.distsDir)
+    into buildDir
+}
+
+
+// gather distribution output from all subprojects and put into build folder
+task installDist(type: Copy, dependsOn: rslModules.makeDist) {
+    finalizedBy {enhanceJARs}
+
+    into buildDir
+
+    into('.') {
+        subprojects.each {
+            from it.buildDir.toString() + '/' + it.distsDirName
+        }
+    }
+
+    into('.') {
+        from 'resources'
+    }
+
+}
+build.finalizedBy(installDist)
+
+// execute test classes for all rslModules
+task test(type: JavaExec) {
+    dependsOn clean
+    dependsOn testJar
+    dependsOn installTestRunner
+    dependsOn {enhanceJARs}
+
+    workingDir = rootProject.buildDir
+    classpath = getUnitTestClassPath()
+    main = 'rsl.testrunner.Main'
+
+    //getPersistenceJarRuntimePath
+
+    if(project.hasProperty('testClass')){
+        args = ['tests.jar', 'unittests', project.property('testClass')]
+    }else{
+        args = ['tests.jar', 'unittests']
+    }
+}
+
+
+task compileSchemas(type: JavaExec)  {
+    dependsOn build
+    dependsOn installDist
+    finalizedBy {enhanceJARs}
+    workingDir = rootProject.buildDir
+    classpath = getRunClasspath()
+    main = 'rsl.core.RSL'
+    args = ['--compileSchemas']
+}
+
+
+task cleanDemo(type: Delete) {
+   delete 'demo/rsl_demo_embedded/rsl'
+}
+
+task deployToDemo(type: Copy) {
+    dependsOn build
+    dependsOn installDist
+    dependsOn cleanDemo
+    from buildDir
+    into "demo/rsl_demo_embedded/rsl"
+}
+
+
+task enhanceJARs() {
+    doLast {
+        javaexec {
+            classpath = getRunClasspath()
+            main = 'com.objectdb.Enhancer'
+            args = fileTree(dir: 'build', includes: ['rsl-core.jar', 'schemas/compiled/*.jar', 'schemas/compiled/*/*.jar', 'tests/*.jar'])
+        }
+    }
+}

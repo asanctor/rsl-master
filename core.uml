@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>rsl.core</OriginalElement>
+  <nodes>
+    <node x="609.168312552832" y="546.0">rsl.core.coremodel.RslUser</node>
+    <node x="0.0" y="848.0">rsl.core.classloaders.MemoryClassLoader</node>
+    <node x="605.7835428994085" y="198.0">rsl.core.coremodel.EntityEditorTimestamp</node>
+    <node x="222.7835428994085" y="546.0">rsl.core.RslQuery</node>
+    <node x="91.78354289940853" y="546.0">rsl.core.coremodel.RslResource</node>
+    <node x="267.35854289940846" y="0.0">rsl.core.ClassGenerationResult</node>
+    <node x="201.0" y="848.0">rsl.core.coremodel.MyClass.Pair</node>
+    <node x="43.986169695689114" y="774.0">rsl.core.EntityFactory</node>
+    <node x="441.28354289940853" y="89.0">rsl.core.RSL</node>
+    <node x="42.0" y="0.0">rsl.core.Config</node>
+    <node x="795.7835428994085" y="357.0">rsl.core.coremodel.Preference</node>
+    <node x="605.3585428994086" y="0.0">rsl.core.classloaders.JarLoader</node>
+    <node x="627.668312552832" y="665.0">rsl.core.coremodel.MyClass</node>
+    <node x="452.3585428994085" y="0.0">rsl.core.RSLEventLogger</node>
+    <node x="171.7714983093834" y="665.0">rsl.core.coremodel.RslSelector</node>
+    <node x="427.4267857142857" y="357.0">rsl.core.coremodel.RslEntity</node>
+    <node x="338.78354289940853" y="198.0">rsl.core.coremodel.RslLink</node>
+    <node x="574.4015204987326" y="357.0">rsl.core.coremodel.RslGroup</node>
+    <node x="0.0" y="89.0">rsl.core.ContentHoster</node>
+    <node x="444.78354289940853" y="198.0">rsl.core.coremodel.UserEntitySharing</node>
+    <node x="230.23170540997492" y="774.0">rsl.core.GraphCrawler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="rsl.core.coremodel.RslLink" target="rsl.core.RSL">
+      <point x="0.0" y="-14.5" />
+      <point x="381.28354289940853" y="168.0" />
+      <point x="464.73354289940846" y="168.0" />
+      <point x="-10.050000000000011" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslEntity" target="rsl.core.coremodel.RslLink">
+      <point x="-43.400000000000034" y="-14.5" />
+      <point x="430.52678571428567" y="307.0" />
+      <point x="375.97104289940853" y="307.0" />
+      <point x="-5.3125" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.UserEntitySharing" target="rsl.core.coremodel.RslUser">
+      <point x="20.142857142857167" y="14.5" />
+      <point x="535.4264000422656" y="287.0" />
+      <point x="537.5517857142856" y="287.0" />
+      <point x="537.5517857142856" y="466.0" />
+      <point x="628.5183125528321" y="466.0" />
+      <point x="-23.649999999999977" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.MyClass" target="rsl.core.coremodel.RslEntity">
+      <point x="-26.285714285714334" y="-14.5" />
+      <point x="647.3825982671177" y="635.0" />
+      <point x="510.3345213440408" y="635.0" />
+      <point x="510.3345213440408" y="516.0" />
+      <point x="488.234478021978" y="516.0" />
+      <point x="14.30769230769232" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslEntity" target="rsl.core.RSL">
+      <point x="-12.400000000000034" y="-14.5" />
+      <point x="461.52678571428567" y="257.0" />
+      <point x="434.28354289940853" y="257.0" />
+      <point x="434.28354289940853" y="178.0" />
+      <point x="471.4335428994085" y="178.0" />
+      <point x="-3.3500000000000227" y="14.5" />
+    </edge>
+    <edge source="rsl.core.RslQuery" target="rsl.core.RSL">
+      <point x="-23.75" y="-14.5" />
+      <point x="246.5335428994085" y="148.0" />
+      <point x="451.3335428994085" y="148.0" />
+      <point x="-23.44999999999999" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslGroup" target="rsl.core.coremodel.RslUser">
+      <point x="38.39999999999998" y="14.5" />
+      <point x="660.8015204987325" y="446.0" />
+      <point x="658.6183125528321" y="446.0" />
+      <point x="6.4500000000000455" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.RSL" target="rsl.core.Config">
+      <point x="-26.80000000000001" y="-14.5" />
+      <point x="447.98354289940846" y="69.0" />
+      <point x="105.0" y="69.0" />
+      <point x="21.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.EntityEditorTimestamp" target="rsl.core.coremodel.RslUser">
+      <point x="42.25000000000003" y="14.5" />
+      <point x="732.5335428994085" y="317.0" />
+      <point x="737.6072125950977" y="317.0" />
+      <point x="737.6072125950977" y="476.0" />
+      <point x="671.5183125528321" y="476.0" />
+      <point x="19.350000000000023" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.RSL" target="rsl.core.classloaders.JarLoader">
+      <point x="26.80000000000001" y="-14.5" />
+      <point x="501.5835428994085" y="69.0" />
+      <point x="654.3585428994086" y="69.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslLink" target="rsl.core.coremodel.RslEntity">
+      <point x="15.9375" y="14.5" />
+      <point x="397.22104289940853" y="287.0" />
+      <point x="442.9267857142857" y="287.0" />
+      <point x="-31.0" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.RSL">
+      <point x="32.25" y="-14.5" />
+      <point x="684.418312552832" y="506.0" />
+      <point x="785.2835428994085" y="506.0" />
+      <point x="785.2835428994085" y="158.0" />
+      <point x="491.53354289940853" y="158.0" />
+      <point x="16.75" y="14.5" />
+    </edge>
+    <edge source="rsl.core.EntityFactory" target="rsl.core.coremodel.RslSelector">
+      <point x="39.0" y="-14.5" />
+      <point x="141.4861696956891" y="754.0" />
+      <point x="189.2714983093834" y="754.0" />
+      <point x="-35.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslResource" target="rsl.core.RSL">
+      <point x="-13.875" y="-14.5" />
+      <point x="133.40854289940853" y="456.0" />
+      <point x="125.03354289940853" y="456.0" />
+      <point x="125.03354289940853" y="138.0" />
+      <point x="444.63354289940855" y="138.0" />
+      <point x="-30.149999999999977" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.EntityEditorTimestamp" target="rsl.core.RSL">
+      <point x="0.0" y="-14.5" />
+      <point x="690.2835428994085" y="168.0" />
+      <point x="484.8335428994085" y="168.0" />
+      <point x="10.050000000000011" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.UserEntitySharing" target="rsl.core.RSL">
+      <point x="0.0" y="-14.5" />
+      <point x="515.2835428994085" y="178.0" />
+      <point x="478.13354289940855" y="178.0" />
+      <point x="3.3500000000000227" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslSelector" target="rsl.core.RSL">
+      <point x="15.0" y="-14.5" />
+      <point x="239.2714983093834" y="625.0" />
+      <point x="328.28354289940853" y="625.0" />
+      <point x="328.28354289940853" y="158.0" />
+      <point x="458.03354289940853" y="158.0" />
+      <point x="-16.75" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslEntity" target="rsl.core.coremodel.EntityEditorTimestamp">
+      <point x="31.0" y="-14.5" />
+      <point x="504.9267857142857" y="317.0" />
+      <point x="648.0335428994085" y="317.0" />
+      <point x="-42.25" y="14.5" />
+    </edge>
+    <edge source="rsl.core.RSL" target="rsl.core.ClassGenerationResult">
+      <point x="0.0" y="-14.5" />
+      <point x="474.78354289940853" y="49.0" />
+      <point x="391.10854289940846" y="49.0" />
+      <point x="41.25" y="14.5" />
+    </edge>
+    <edge source="rsl.core.EntityFactory" target="rsl.core.coremodel.RslResource">
+      <point x="0.0" y="-14.5" />
+      <point x="102.48616969568911" y="645.0" />
+      <point x="99.71211432797998" y="645.0" />
+      <point x="-47.571428571428555" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.coremodel.UserEntitySharing">
+      <point x="-19.350000000000023" y="-14.5" />
+      <point x="632.818312552832" y="456.0" />
+      <point x="541.8517857142856" y="456.0" />
+      <point x="541.8517857142856" y="277.0" />
+      <point x="555.5692571851228" y="277.0" />
+      <point x="40.28571428571428" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.coremodel.Preference">
+      <point x="40.85000000000002" y="-14.5" />
+      <point x="693.0183125528321" y="526.0" />
+      <point x="834.7835428994085" y="526.0" />
+      <point x="-13.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.GraphCrawler" target="rsl.core.coremodel.RslEntity">
+      <point x="37.5" y="-14.5" />
+      <point x="327.7317054099749" y="744.0" />
+      <point x="461.00370879120874" y="744.0" />
+      <point x="461.00370879120874" y="526.0" />
+      <point x="466.77293956043957" y="526.0" />
+      <point x="-7.153846153846132" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.MyClass" target="rsl.core.coremodel.Preference">
+      <point x="26.285714285714334" y="-14.5" />
+      <point x="699.9540268385464" y="635.0" />
+      <point x="885.5335428994085" y="635.0" />
+      <point x="885.5335428994085" y="526.0" />
+      <point x="886.7835428994085" y="526.0" />
+      <point x="39.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslSelector" target="rsl.core.coremodel.RslEntity">
+      <point x="45.0" y="-14.5" />
+      <point x="269.2714983093834" y="645.0" />
+      <point x="453.84986263736255" y="645.0" />
+      <point x="453.84986263736255" y="516.0" />
+      <point x="459.6190934065934" y="516.0" />
+      <point x="-14.30769230769232" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslResource" target="rsl.core.ContentHoster">
+      <point x="-41.625" y="-14.5" />
+      <point x="105.65854289940853" y="456.0" />
+      <point x="63.0" y="456.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.UserEntitySharing" target="rsl.core.coremodel.RslEntity">
+      <point x="-20.142857142857167" y="14.5" />
+      <point x="495.1406857565513" y="277.0" />
+      <point x="480.1267857142857" y="277.0" />
+      <point x="6.199999999999989" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.GraphCrawler" target="rsl.core.coremodel.RslSelector">
+      <point x="-7.5" y="-14.5" />
+      <point x="282.7317054099749" y="714.0" />
+      <point x="259.2714983093834" y="714.0" />
+      <point x="35.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.EntityEditorTimestamp" target="rsl.core.coremodel.RslEntity">
+      <point x="-8.450000000000045" y="14.5" />
+      <point x="681.8335428994085" y="337.0" />
+      <point x="517.3267857142857" y="337.0" />
+      <point x="43.39999999999998" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.MyClass" target="rsl.core.coremodel.RslUser">
+      <point x="0.0" y="-14.5" />
+      <point x="21.5" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.MyClass" target="rsl.core.RSL">
+      <point x="39.428571428571445" y="-14.5" />
+      <point x="713.0968839814035" y="645.0" />
+      <point x="910.2835428994085" y="645.0" />
+      <point x="910.2835428994085" y="138.0" />
+      <point x="504.9335428994085" y="138.0" />
+      <point x="30.150000000000034" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.Preference" target="rsl.core.RSL">
+      <point x="0.0" y="-14.5" />
+      <point x="847.7835428994085" y="148.0" />
+      <point x="498.2335428994086" y="148.0" />
+      <point x="23.450000000000045" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslEntity" target="rsl.core.coremodel.RslUser">
+      <point x="35.769230769230774" y="14.5" />
+      <point x="509.6960164835165" y="486.0" />
+      <point x="619.918312552832" y="486.0" />
+      <point x="-32.25" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslResource" target="rsl.core.coremodel.RslSelector">
+      <point x="31.714285714285722" y="14.5" />
+      <point x="178.99782861369425" y="605.0" />
+      <point x="209.2714983093834" y="605.0" />
+      <point x="-15.0" y="-14.5" />
+    </edge>
+    <edge source="rsl.core.ContentHoster" target="rsl.core.Config">
+      <point x="0.0" y="-14.5" />
+      <point x="-21.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.coremodel.RslGroup">
+      <point x="-10.75" y="-14.5" />
+      <point x="641.418312552832" y="436.0" />
+      <point x="584.0015204987326" y="436.0" />
+      <point x="-38.39999999999998" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslEntity" target="rsl.core.coremodel.UserEntitySharing">
+      <point x="0.0" y="-14.5" />
+      <point x="473.9267857142857" y="337.0" />
+      <point x="474.9978286136942" y="337.0" />
+      <point x="-40.28571428571428" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslResource" target="rsl.core.coremodel.RslEntity">
+      <point x="13.875" y="-14.5" />
+      <point x="161.15854289940853" y="476.0" />
+      <point x="431.0037087912088" y="476.0" />
+      <point x="-42.923076923076906" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.coremodel.RslEntity">
+      <point x="-36.549999999999955" y="-14.5" />
+      <point x="615.6183125528321" y="496.0" />
+      <point x="502.54217032967034" y="496.0" />
+      <point x="28.61538461538464" y="14.5" />
+    </edge>
+    <edge source="rsl.core.RSL" target="rsl.core.RSLEventLogger">
+      <point x="13.399999999999977" y="-14.5" />
+      <point x="488.1835428994085" y="59.0" />
+      <point x="518.8585428994086" y="59.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="rsl.core.EntityFactory" target="rsl.core.coremodel.RslLink">
+      <point x="-39.0" y="-14.5" />
+      <point x="63.486169695689114" y="754.0" />
+      <point x="48.712500000000034" y="754.0" />
+      <point x="48.712500000000034" y="466.0" />
+      <point x="371.96346259509767" y="466.0" />
+      <point x="371.96346259509767" y="337.0" />
+      <point x="344.09604289940853" y="337.0" />
+      <point x="-37.1875" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslSelector" target="rsl.core.coremodel.RslResource">
+      <point x="-30.0" y="-14.5" />
+      <point x="194.2714983093834" y="615.0" />
+      <point x="163.14068575655136" y="615.0" />
+      <point x="15.857142857142833" y="14.5" />
+    </edge>
+    <edge source="rsl.core.RslQuery" target="rsl.core.coremodel.RslEntity">
+      <point x="23.75" y="-14.5" />
+      <point x="294.03354289940853" y="496.0" />
+      <point x="445.31140109890106" y="496.0" />
+      <point x="-28.61538461538464" y="14.5" />
+    </edge>
+    <edge source="rsl.core.GraphCrawler" target="rsl.core.coremodel.RslResource">
+      <point x="-37.5" y="-14.5" />
+      <point x="252.73170540997492" y="734.0" />
+      <point x="155.7714983093834" y="734.0" />
+      <point x="155.7714983093834" y="635.0" />
+      <point x="131.42640004226564" y="635.0" />
+      <point x="-15.85714285714289" y="14.5" />
+    </edge>
+    <edge source="rsl.core.GraphCrawler" target="rsl.core.coremodel.RslLink">
+      <point x="22.5" y="-14.5" />
+      <point x="312.7317054099749" y="734.0" />
+      <point x="393.58846259509767" y="734.0" />
+      <point x="393.58846259509767" y="317.0" />
+      <point x="365.34604289940853" y="317.0" />
+      <point x="-15.9375" y="14.5" />
+    </edge>
+    <edge source="rsl.core.coremodel.RslUser" target="rsl.core.coremodel.EntityEditorTimestamp">
+      <point x="27.950000000000045" y="-14.5" />
+      <point x="680.1183125528321" y="496.0" />
+      <point x="746.2072125950978" y="496.0" />
+      <point x="746.2072125950978" y="337.0" />
+      <point x="766.3335428994086" y="337.0" />
+      <point x="76.0500000000001" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="399.0" y="236.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

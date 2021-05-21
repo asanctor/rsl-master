@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  	<script src="libs/jquery-3.2.1.min.js"></script>
+  
+  	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<script>
+
+		function tryCommand(command, responseContainer)
+		{
+			command = JSON.parse(command);
+			console.log(command);
+			$.post( "http://localhost:8080", {query: JSON.stringify(command)}, function(data){
+				$(responseContainer).html(data);
+			});
+			$(responseContainer).show();
+		}
+
+		function makeAnchorText(txt)
+		{
+			let result = txt.toLowerCase().trim();
+			result = result.replace(/ /g,"-");
+			return result;
+		}
+
+		function makeToc()
+		{
+			let tocRoot = $('#toc');
+			let sectionList = $('<ul></ul>');
+			$('h2').each(function(index, sec) {
+
+				let sectionAnchor = makeAnchorText($(sec).text());
+				$(sec).html('<a name="' + sectionAnchor + '">' + $(sec).text() + '</a>');
+
+				let sectionItem = $('<li><a href="#' + sectionAnchor + '">' + $(sec).text() + '</a></li>');
+
+				let subSections = $(sec).nextUntil('h2', 'h3');
+				if($(subSections).length > 0)
+				{
+					let subsectionList = $('<ul></ul>');
+					$(subSections).each(function(index, subsec) {
+						let subsectionAnchor = makeAnchorText($(subsec).text());
+						$(subsec).html('<a name="' + subsectionAnchor + '">' + $(subsec).text() + '</a>');
+						let subsectionItem = $('<li><a href="#' + subsectionAnchor + '">' + $(subsec).text() + '</a></li>');
+						$(subsectionList).append(subsectionItem);
+					});
+					$(sectionItem).append(subsectionList);
+				}
+				
+				$(sectionList).append(sectionItem);
+			});
+			$(tocRoot).append('<h2>Table of Contents</h2>');
+			$(tocRoot).append(sectionList);
+		}
+
+		$( document ).ready(function() {
+
+			makeToc();
+
+			$('pre.js_example').each(function(index, el) {
+				
+				let originalCode = "";
+				let code = "";
+				if( $(el).hasClass("format_object") ){
+					originalCode = $(el).html().trim();
+					let jsonObj = JSON.parse(originalCode);
+					code = JSON.stringify(jsonObj, null, 2);
+				}else{
+					originalCode = $(el).html().trim();
+					code = originalCode;
+				}
+
+				let prettyCode = $( "<pre><code class='json agate'></code></pre>" );
+				$(prettyCode).find("code").html(code);
+
+				if( $(el).hasClass("try_example") ){
+					let tryButton = $( "<button type='button' class='btn btn-primary'>Try</button>" );
+					let responseContainer = $( "<pre><code class='json agate'>...</code></pre>" );
+					$(responseContainer).hide();
+					$(tryButton).click(function(){
+						tryCommand(originalCode, responseContainer);
+					});
+					$(prettyCode).append(tryButton);
+					$(prettyCode).append(responseContainer);
+				}
+
+				$(prettyCode).insertAfter(el);
+				$(el).remove();
+
+			});
+
+			$('pre code.json').each(function(index, el) {
+				hljs.highlightBlock(el);
+			});
+			
+		});
+
+	</script>
+
+	<style>
+		body {
+			padding: 15px;
+		}
+
+		h3 {
+			display: list-item;                                                   
+    		list-style-type: disc;       
+    		list-style-position: inside;
+		}
+
+		h2 a {color: black;text-decoration: none;}
+		h2 a:link {color: black;text-decoration: none;}
+		h2 a:visited {color: black;text-decoration: none;}
+		h2 a:hover {color: black;text-decoration: none;}
+		h2 a:active {color: black;text-decoration: none;}
+		h3 a {color: black;text-decoration: none;}
+		h3 a:link {color: black;text-decoration: none;}
+		h3 a:visited {color: black;text-decoration: none;}
+		h3 a:hover {color: black;text-decoration: none;}
+		h3 a:active {color: black;text-decoration: none;}
+
+	</style>
+
+</head>
+<body>
+  
+<h1>RSL Demo</h1>
+
+<p>
+	To use the HTTP interface to the RSL server you need to do a POST request on port 8080. As part of the POST body you should include a key/value pair, with the key being "query" and the value being a JSON object with the following structure:
+</p>
+
+<pre class="js_example">
+	{ "command": "YOUR_COMMAND", "parameters": {  } }
+</pre>
+
+<p>
+	As a more concrete example, you could for instance do the following with jQuery:
+</p>
+
+
+<pre class="js_example">
+$.post( 
+   "http://localhost:8080", 
+   { 
+      query: JSON.stringify({ 
+         "command": "getServerVersion", 
+         "parameters": { } 
+      })
+   }, 
+   function(data){
+      // handle response
+   }
+);
+</pre>
+
+
+<p>
+	The command will be handled by the microservice that has registered the command. This could be the default microservice or one of the custom microservices you make for your use case (see rsl > modules > rsl-server > src > main > java > rsl.server > microservices). The rest of this document provides some examples for the default service that provides some generic commands to work with RSL. 
+</p>
+
+<p>
+	For more examples, also see the unit tests for the rsl-server module: <br>
+	rsl > modules > rsl-server > src > test > java > unittests.rsl.server 	
+</p>
+
+<p>
+	If you have the RSL server running on localhost:8080 you will be able to try some examples by pressing the <button type="button" class="btn btn-primary">Try</button> buttons to execute them.
+</p>
+
+<hr>
+
+<div id="toc"></div>
+
+
+
+<hr>
+<h2>Server Info</h2>
+
+
+<h3>Get Server Version</h3>
+
+<p>
+	Returns the RSL Server version (not the RSL core lib, the server module).
+</p>
+
+<pre class="js_example format_object try_example">
+{ "command": "getServerVersion", "parameters": { } }
+</pre>
+
+
+<h3>Get Registered Services</h3>
+
+<p>
+	Returns the active microservices together with the commands they support.
+</p>
+
+<pre class="js_example format_object try_example">
+{ "command": "getServiceInfo", "parameters": { } }
+</pre>
+
+
+<h3>Get Content Hoster Port</h3>
+
+<p>
+	The content hoster service allows users to upload and retrieve bigger content units (images, PDF, ...) and they can be attached to an entity later. Use this command to know on which port the content hoster service is running. 
+</p>
+
+<pre class="js_example format_object try_example">
+{ "command": "getContentHosterPort", "parameters": { } }
+</pre>
+
+<hr>
+<h2>Content Hoster</h2>
+
+<p>
+	The content hoster operates on a different port and allows users to upload files so that bigger files can be kept on the server side. The port of the content hoster can be retrieved with the "getContentHosterPort" command (see earlier). At the moment the port is set to 5365, but this can change in the future. In these examples we assume a location of "http://localhost:5365".
+</p>
+
+<h3>Upload a File</h3>
+<p>
+	To upload a file to the hoster service, send a single file to the service in a POST request to the endpoint below. The key for the file in the POST body should be "file". If successful, the service returns an identifier that can be used as a handle to the file (e.g. to attach it to an entity, or to retrieve/remove it later).
+</p>
+<pre class="js_example">
+POST http://localhost:5365/upload
+</pre>
+
+<h3>Retrieve a File</h3>
+<p>
+	To retrieve a file, perform a GET request with the desired file's identifier as a URL parameter as shown below. The entire file will be sent back as the HTTP response.
+</p>
+<pre class="js_example">
+GET http://localhost:5365/file?id=j5g4323fhg42
+</pre>
+
+<h3>Delete a File</h3>
+<p>
+	To delete a file, perform a GET request, with the file's identifier as a URL parameter as shown below. This permanently deletes the file. Note that this command does not check if there are still entities that are still attached to the file. This may result in cases where entities will point to files that won't exist any more.
+</p>
+<pre class="js_example">
+GET http://localhost:5365/delete?id=j5g4323fhg42
+</pre>
+
+
+
+<hr>
+<h2>Entities</h2>
+
+<h3>Create Entity</h3>
+
+<p>
+	Create a new entity (resource, selector or link). "model" specifies in which model the entity is defined. If it's part of the shared model, "shared" should be used as value. "entity" should specify the name of the entity as it is defined in the model.
+</p>
+
+<pre class="js_example try_example format_object">
+	{ "command": "createEntity", "parameters": { "model": "shared", "entity": "TextResource" } }
+</pre>
+
+<h3>Delete Entity</h3>
+
+<pre class="js_example format_object">
+	{ "command": "deleteEntity", "parameters": { "id": 1 } }
+</pre>
+
+<h3>Get Entity</h3>
+
+<pre class="js_example format_object">
+	{ "command": "getEntity", "parameters": { "id": 1 } }
+</pre>
+
+<h3>Get Entities</h3>
+<p>
+Get a list of entities by their IDs. "entities" should always be an array, even if it only contains one ID.
+</p>
+<pre class="js_example format_object">
+	{ "command": "getEntities", "parameters": { "entities": [1, 2, 3] } }
+</pre>
+
+<h3>Set Entity Fields</h3>
+
+<pre class="js_example format_object">
+	{ "command": "setEntityFields", "parameters": { "id": 1, "fields": {"title": "test", "author": "rroels", "theme": "vub"} } }
+</pre>
+
+<hr>
+<h2>Resources</h2>
+
+<h3>Set Hosted Content</h3>
+
+<p>
+	The content itself should be previously uploaded via the HTTP Content Hoster (see earlier). This service should have returned an index for your content which should be used with this command. This command simply associates an entity (referenced by "id") with the content referenced by "hostedContentIndex".
+</p>
+
+<pre class="js_example format_object">
+	{ "command": "setHostedContent", "parameters": { "id": 1, "hostedContentIndex": "hj324g4j2hv4jh" } }
+</pre>
+
+<h3>Detach Hosted Content</h3>
+<p>
+	This removes any attached content from an entity, but it does not remove the actual content from the content hoster database. This command should be used if you have attached the same content to more than one entity.  
+</p>
+<pre class="js_example format_object">
+	{ "command": "detachHostedContent", "parameters": { "id": 1} }
+</pre>
+
+<h3>Delete Hosted Content</h3>
+<p>
+	This removes any attached content from an entity, and removes the content from the content hoster database. Note that this might cause issues if you have attached the same content to multiple entities. 
+</p>
+<pre class="js_example format_object">
+	{ "command": "deleteHostedContent", "parameters": { "id": 1} }
+</pre>
+
+<h3>Get Selectors</h3>
+<p>
+	Retrieves all selectors that refer to a specific resource.
+</p>
+<pre class="js_example format_object">
+	{ "command": "getSelectors", "parameters": { "id": 1} }
+</pre>
+
+<h3>Add Selector</h3>
+<p>
+	Attach a specific selector to a resource. As expected this will also set/override the selector's target (a resource) on the selector's side. This is a convenience method, and the same can be achieved with the command to set a selector's target resource.
+</p>
+<pre class="js_example format_object">
+	{ "command": "addSelector", "parameters": { "id": 1, "fields": {"title": "test", "author": "rroels", "theme": "vub"} } }
+</pre>
+
+
+<hr>
+<h2>Selectors</h2>
+
+<h3>Get Selector's Resource</h3>
+<p>
+	Get the resource that the selector points to.
+</p>
+<pre class="js_example format_object">
+	{ "command": "getSelectorResource", "parameters": { "id": 1 } }
+</pre>
+
+<h3>Set Selector's Resource</h3>
+<p>
+	Set the resource that the selector points to. The resource should already exist and its ID is used to specify the target resource in this command.
+</p>
+<pre class="js_example format_object">
+	{ "command": "setSelectorResource", "parameters": { "selectorID": 1, "resourceID": 1 } }
+</pre>
+
+
+
+<hr>
+<h2>Links</h2>
+ 
+<h3>Add Link Source(s)</h3>
+<p>
+	Add sources (entities) to a link. "sources" contains a list of entity IDs, representing the entities that will be added as sources. "sources" should always be an array, even if you only add a single source.
+</p>
+<pre class="js_example format_object">
+	{ "command": "addLinkSources", "parameters": { "id": 1, "sources": [2,3] } }
+</pre>
+
+
+<h3>Add Link Target(s)</h3>
+<p>
+	Add targets (entities) to a link. "targets" contains a list of entity IDs, representing the entities that will be added as targets. "targets" should always be an array, even if you only add a single target.
+</p>
+<pre class="js_example format_object">
+	{ "command": "addLinkTargets", "parameters": { "id": 1, "targets": [2,3] } }
+</pre>
+
+
+<h3>Remove Link Source(s)</h3>
+<p>
+	Remove sources (entities) from a link. "sources" contains a list of entity IDs, representing the entities that will be removed from the link's sources. "sources" should always be an array, even if you only remove a single source.
+</p>
+<pre class="js_example format_object">
+	{ "command": "removeLinkSources", "parameters": { "id": 1, "sources": [2,3] } }
+</pre>
+
+
+<h3>Remove Link Target(s)</h3>
+<p>
+	Remove targets (entities) from a link. "targets" contains a list of entity IDs, representing the entities that will be removed from the link's targets. "targets" should always be an array, even if you only remove a single target.
+</p>
+<pre class="js_example format_object">
+	{ "command": "removeLinkTargets", "parameters": { "id": 1, "targets": [2,3] } }
+</pre>
+        
+<hr>
+
+
+</body>
+</html>

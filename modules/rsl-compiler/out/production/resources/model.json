@@ -1,0 +1,55 @@
+
+{
+  "name": "mindxpres",
+  "version": "0.0.1",
+
+  "resources": [
+    {
+      "name": "PDFResource",
+      "properties": [
+        {"name": "fileSize", "type": "int64"}
+      ]
+    },
+    {
+      "name": "ImageResource",
+      "properties": [
+        {"name": "fileSize", "type": "int64"},
+        {"name": "width", "type": "int32"},
+        {"name": "height", "type": "int32"}
+      ]
+    }
+  ],
+
+  "links": [
+    {
+      "name": "contains",
+      "sourceRestrictions": {"type": "whitelist", "list": ["PDFResource", "PDFSelector"]},
+      "targetRestrictions": {"type": "blacklist", "list": ["PDFResource", "PDFSelector"]},
+      "properties": [
+        {"name": "isScaledDown", "type": "boolean"}
+      ]
+    }
+  ],
+
+  "selectors": [
+    {
+      "name": "ImageSelector",
+      "refersTo": "ImageResource",
+      "properties": [
+        {"name": "x", "type": "int64"},
+        {"name": "y", "type": "int32"},
+        {"name": "width", "type": "int32"},
+        {"name": "height", "type": "int32"}
+      ]
+    },
+    {
+      "name": "PDFSelector",
+      "refersTo": "PDFResource",
+      "properties": [
+        {"name": "pageNumber", "type": "int32"},
+        {"name": "paragraph", "type": "int32"}
+      ]
+    }
+  ]
+
+}

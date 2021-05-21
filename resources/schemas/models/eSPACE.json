@@ -1,0 +1,166 @@
+{
+   "name": "eSPACE",
+   "version": "0.0.1",
+
+   "resources": [
+      {
+         "name": "DeviceResource",
+         "properties": [
+            {"name": "MAC", "type": "string"},
+			{"name": "image", "type": "string"},
+			{"name": "width", "type": "int64"},
+			{"name": "height", "type": "int64"},
+			{"name": "ACs", "type": "list"}
+         ]
+      },
+	  {
+         "name": "ParameterResource",
+         "properties": [
+			{"name": "type", "type": "string"},
+			{"name": "valuerange", "type": "list"},
+            {"name": "value", "type": "string"}
+         ]
+      },
+	  {
+         "name": "LayoutResource",
+         "properties": [         
+			{"name": "canvas", "type": "string"}
+         ]
+      },
+	  {
+         "name": "DCompResource",
+         "properties": [
+			{"name": "rule", "type": "string"},
+			{"name": "ruleType", "type": "string"},
+			{"name": "description", "type": "string"},
+            {"name": "distributable", "type": "boolean"}
+         ]
+      },
+	  {
+         "name": "FUIResource",
+         "properties": [
+			{"name": "preview", "type": "string"},
+			{"name": "position", "type": "string"},
+			{"name": "topUIe", "type": "int64"},
+            {"name": "device", "type": "int64"}
+         ]
+      },
+	  {
+         "name": "UIeResource",
+         "properties": [
+			{"name": "defaultSize", "type": "int64"},
+            {"name": "defaultColor", "type": "string"},
+			{"name": "inputSettings", "type": "string"},
+			{"name": "inputSlot", "type": "list"},
+			{"name": "outputSlot", "type": "list"},
+			{"name": "jsCode", "type": "string"},
+			{"name": "xmlCode", "type": "string"}
+         ]
+      },
+	  {
+         "name": "PhysicalObjectResource",
+         "properties": [
+            {"name": "location", "type": "string"},
+			{"name": "image", "type": "string"},
+			{"name": "ACs", "type": "list"}
+         ]
+      },
+	  {
+         "name": "ServiceResource",
+         "properties": [
+			{"name": "ACs", "type": "list"},
+			{"name": "image", "type": "string"}
+         ]
+      },
+	  {
+         "name": "PropertySetResource",
+         "properties": [
+         ]
+      },
+	  {
+         "name": "ACResource",
+         "properties": [
+            {"name": "sourceCode", "type": "string"},
+			{"name": "inputSettings", "type": "list"},
+			{"name": "inputSlot", "type": "list"},
+			{"name": "outputSlot", "type": "list"},
+			{"name": "from", "type": "int64"}
+         ]
+      },
+      {
+         "name": "ApplicationResource",
+         "properties": [
+			{"name": "description", "type": "string"},
+			{"name": "canvaselements", "type": "list"},
+			{"name": "canvaslines", "type": "list"}
+         ]
+      },
+	  {
+         "name": "FileResource",
+         "properties": [
+			{"name": "description", "type": "string"},
+			{"name": "source", "type": "string"}
+         ]
+      }
+	  ,
+	  {
+         "name": "ContextResource",
+         "properties": [
+			{"name": "description", "type": "string"},
+			{"name": "valuerange", "type": "list"},
+			{"name": "value", "type": "string"},
+			{"name": "operator", "type": "string"},
+			{"name": "image", "type": "string"}
+         ]
+      }
+   ],
+
+   "selectors": [
+	{
+      "name": "VideoSelector",
+      "refersTo": "VideoResource",
+      "properties": [
+        {"name": "startPosition", "type": "int64"},
+        {"name": "length", "type": "int32"}
+      ]
+    }
+   ],
+
+   "links": [
+      {
+         "name": "NavigationalLink",
+         "properties": [
+            {"name": "followCount", "type": "int64"}
+         ]
+      },
+	  {
+         "name": "SignalLink",
+         "properties": [
+			{"name": "icon", "type": "string"},
+			{"name": "dcompId", "type": "int64"},
+			{"name": "prop", "type": "list"}
+            
+         ]
+      },
+	  {
+         "name": "ParameterLink",
+         "properties": [
+			{"name": "value", "type": "string"},
+            {"name": "dcompId", "type": "int64"}
+         ]
+      },
+	  {
+         "name": "OwnerLink",
+         "properties": [
+			{"name": "dcompId", "type": "int64"}
+         ]
+      },
+      {
+         "name": "StructuralLink",
+         "properties": [
+			{"name": "appId", "type": "int64"},
+            {"name": "value", "type": "string"}
+         ]
+      }
+   ]
+}

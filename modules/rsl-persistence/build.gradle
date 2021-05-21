@@ -1,0 +1,76 @@
+group 'rsl'
+version '0.0.1'
+
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+
+configurations {
+    jpaPersistence
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://m2.objectdb.com" }
+}
+
+dependencies {
+    compile project(':rsl-util')
+    testCompileOnly project(':rsl-util')
+    jpaPersistence 'com.objectdb:objectdb:2.8.5'
+    api 'org.eclipse.persistence:javax.persistence:2.1.0'
+    api 'javax.transaction:jta:1.1'
+    compile 'com.ea.agentloader:ea-agent-loader:1.0.3'
+}
+
+
+task makeDist(type: Copy) {
+    dependsOn build
+
+    into distsDir
+
+    into('.') {
+        from jar
+        rename {
+            project.name + '.jar'
+        }
+    }
+
+    into(rslPersistenceLibDir.getName()) {
+        from configurations.jpaPersistence
+    }
+
+    into(rslLibDir.getName()) {
+        from rootProject.removeSubprojectDependencies(configurations.runtimeClasspath.getFiles())
+    }
+
+}
+
+
+jar {
+    manifest {
+        def regularLibs = rootProject.fixJarDependencies(configurations.runtimeClasspath.getFiles()).join(' ')
+        def jpaLibs = configurations.jpaPersistence.collect { rslPersistenceLibDir.getName() + '/' + it.getName() }.join(' ')
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Class-Path": regularLibs + ' ' + jpaLibs,
+                "Main-Class": "rsl.persistence.Main")
+    }
+}
+
+/*
+test {
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
+}*/

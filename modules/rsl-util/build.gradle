@@ -1,0 +1,44 @@
+group 'rsl'
+version '0.0.1'
+
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'com.google.guava:guava:21.0'
+    compile 'org.fluttercode.datafactory:datafactory:0.8'
+    compile 'org.reflections:reflections:0.9.11'
+    compile 'com.google.code.gson:gson:2.8.1'
+}
+
+task makeDist(type: Copy) {
+    dependsOn build
+
+    into distsDir
+
+    into('.') {
+        from jar
+        rename {
+            project.name + '.jar'
+        }
+    }
+
+    into(rslLibDir.getName()) {
+        from rootProject.removeSubprojectDependencies(configurations.runtimeClasspath.getFiles())
+    }
+
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                   "Implementation-Version": version,
+                   "Class-Path": rootProject.fixJarDependencies(configurations.runtimeClasspath.getFiles()).join(' '))
+    }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Shared",
+  "version": "1.0.0",
+
+  "resources": [
+    {
+      "name": "TextResource",
+      "properties": [
+        {"name": "text", "type": "string"},
+        {"name": "characterCount", "type": "int64"},
+        {"name": "encoding", "type": "string"}
+      ]
+    },
+    {
+      "name": "ImageResource",
+      "properties": [
+        {"name": "path", "type": "string"},
+        {"name": "imageType", "type": "string"},
+        {"name": "width", "type": "int32"},
+        {"name": "height", "type": "int32"}
+      ]
+    }
+  ],
+
+  "selectors": [
+    {
+      "name": "TextSelector",
+      "refersTo": "TextResource",
+      "properties": [
+        {"name": "startPosition", "type": "int64"},
+        {"name": "length", "type": "int32"}
+      ]
+    },
+    {
+      "name": "ImageSelector",
+      "refersTo": "ImageResource",
+      "properties": [
+        {"name": "x", "type": "int32"},
+        {"name": "y", "type": "int32"},
+        {"name": "width", "type": "int32"},
+        {"name": "height", "type": "int32"}
+      ]
+    }
+  ],
+
+  "links": [
+
+  ]
+}

@@ -1,0 +1,19 @@
+rootProject.name = 'rsl'
+
+include ':rsl-core'
+project(':rsl-core').projectDir = new File('modules/rsl-core')
+
+include ':rsl-server'
+project(':rsl-server').projectDir = new File('modules/rsl-server')
+
+include ':rsl-util'
+project(':rsl-util').projectDir = new File('modules/rsl-util')
+
+include ':rsl-compiler'
+project(':rsl-compiler').projectDir = new File('modules/rsl-compiler')
+
+include ':rsl-persistence'
+project(':rsl-persistence').projectDir = new File('modules/rsl-persistence')
+
+include ':testrunner'
+project(':testrunner').projectDir = new File('tools/testrunner')

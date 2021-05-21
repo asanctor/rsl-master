@@ -1,0 +1,41 @@
+group 'rsl'
+version '0.0.1'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+task makeDist(type: Copy, dependsOn: build) {
+
+    into distsDir
+
+    into('tests') {
+        from jar
+        rename {
+            project.name + '.jar'
+        }
+    }
+
+    into('libs') {
+        from configurations.runtime
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Main-Class": "rsl.testrunner.Main"
+        )
+    }
+}
+
+dependencies {
+    compile 'junit:junit:4.11'
+    compile 'com.google.guava:guava:21.0'
+}

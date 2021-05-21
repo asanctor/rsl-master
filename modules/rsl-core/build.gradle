@@ -1,0 +1,62 @@
+group 'rsl'
+version '0.0.1'
+
+apply plugin: 'java-library'
+
+sourceCompatibility = 1.8
+
+test.onlyIf { false }
+
+repositories {
+    mavenCentral()
+    maven { url "http://m2.objectdb.com" }
+}
+
+dependencies {
+    compile project(':rsl-compiler')
+    compile project(':rsl-util')
+    compile project(':rsl-persistence')
+    api 'org.eclipse.persistence:javax.persistence:2.1.0'
+    api 'javax.transaction:jta:1.1'
+    api 'javax.jdo:jdo-api:3.0.1'
+    compile 'commons-io:commons-io:2.5'
+    compile 'org.apache.commons:commons-lang3:3.6'
+}
+
+/*
+task enhance(type: JavaExec) {
+    main = 'com.objectdb.Enhancer'
+    classpath = sourceSets.main.runtimeClasspath
+    args '-cp', 'src/main/java', 'rsl.core.coremodel.*'
+}
+compileJava.finalizedBy(enhance)
+*/
+
+task makeDist(type: Copy) {
+    dependsOn build
+
+    into distsDir
+
+    into('.') {
+        from jar
+        rename {
+            project.name + '.jar'
+        }
+    }
+
+    into(rslLibDir.getName()) {
+        from rootProject.removeSubprojectDependencies(configurations.runtimeClasspath.getFiles())
+    }
+
+}
+
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Version": version,
+                "Class-Path": rootProject.fixJarDependencies(configurations.runtimeClasspath.getFiles()).join(' '),
+                "Main-Class": "rsl.core.RSL"
+        )
+    }
+}
